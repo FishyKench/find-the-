@@ -18,7 +18,6 @@ public class Gun : MonoBehaviour
     public float timeBtweenShooting, range;
 
 
-    bool shooting, readytoShoot;
 
 
     public Camera fpsCam;
@@ -32,7 +31,7 @@ public class Gun : MonoBehaviour
 
     void Start()
     {
-        readytoShoot = true;
+
     }
 
     // Update is called once per frame
@@ -41,7 +40,6 @@ public class Gun : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             Shoot();
-            Invoke("ResetShot", timeBtweenShooting);
         }
     }
 
@@ -49,14 +47,12 @@ public class Gun : MonoBehaviour
 
     private void Shoot()
     {
-        readytoShoot = false;
 
         if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward , out rayHit, range, whatToHit))
         {
             print("nigga balls");
         }
 
-        Invoke("RestShot", timeBtweenShooting);
 
         Instantiate(_bullet, attackPoint.position, Quaternion.identity);
 

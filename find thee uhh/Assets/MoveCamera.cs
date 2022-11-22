@@ -2,13 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class MoveCamera : MonoBehaviour
 {
-
-    private int _speed;
-
-
     // Start is called before the first frame update
+
+    public Transform cameraPos;
     void Start()
     {
         
@@ -17,14 +15,6 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        transform.position = cameraPos.position;
     }
-
-    public void Walking()
-    {
-
-
-    }
-
-
 }

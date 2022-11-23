@@ -5,6 +5,10 @@ TagManager:
   serializedVersion: 2
   tags:
   - Gun
+  - bullet
+  - blue
+  - red
+  - green
   layers:
   - Default
   - TransparentFX
@@ -14,9 +18,9 @@ TagManager:
   - UI
   - whatIsGround
   - Enemey
-  - 
-  - 
-  - 
+  - Green
+  - Blue
+  - Red
   - 
   - 
   - 

@@ -74,16 +74,11 @@ public class PlayerMovement : MonoBehaviour
 
         SpeedControl();
 
-
-
-
     }
 
     private void FixedUpdate()
     {
         MovePlayer();
-
-        CopyCamera();
     }
 
 
@@ -153,24 +148,5 @@ public class PlayerMovement : MonoBehaviour
     {
         readyToJump = true;
     }
-
-
-
-    public void CopyCamera()
-    {
-        this.transform.rotation = Camera.transform.rotation;
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-       if(collision.gameObject.tag == "Gun")
-        {
-            Physics.IgnoreCollision(Gun.GetComponent<Collider>(), GetComponent<Collider>());
-        }
-    }
-
-
-
-
 
 }

@@ -13,8 +13,6 @@ public class Gun : MonoBehaviour
     [SerializeField]
     private GameObject _bullet;
 
-
-    public int damage;
     public float timeBtweenShooting, range;
 
 
@@ -35,9 +33,6 @@ public class Gun : MonoBehaviour
         {
             Shoot();
         }
-
-       
-
     }
 
 

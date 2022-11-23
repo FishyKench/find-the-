@@ -19,8 +19,8 @@ public class bulltScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        this.transform.position = transform.position + Camera.main.transform.forward * 2;
-        rb.velocity = Camera.main.transform.forward * 4;
+        this.transform.position = transform.position + Camera.main.transform.forward * 0.8f;
+        rb.velocity = Camera.main.transform.forward * 0.5f * Time.deltaTime;
     }
 
     IEnumerator DIEE()
@@ -28,4 +28,11 @@ public class bulltScript : MonoBehaviour
         yield return new WaitForSeconds(2);
         Destroy(this.gameObject);
     }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        Destroy(this.gameObject);
+    }
+
+
 }

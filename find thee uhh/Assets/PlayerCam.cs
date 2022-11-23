@@ -6,35 +6,36 @@ public class PlayerCam : MonoBehaviour
 {
     // Start is called before the first frame update
 
+   
+        public float senX;
+        public float senY;
 
-    public float senX;
-    public float senY;
-
-    public Transform orientation;
-
-
-    float xRotation;
-    float yRotation;
+        public Transform orientation;
 
 
-    void Start()
-    {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-    }
+        float xRotation;
+        float yRotation;
 
-    // Update is called once per frame
-    void Update()
-    {
-        float mouseX = Input.GetAxisRaw("Mouse X") * Time.deltaTime * senX;
-        float mouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * senY;
 
-        yRotation += mouseX;
-        xRotation -= mouseY;
-        xRotation = Mathf.Clamp(xRotation, -90, 90f);
+        void Start()
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
 
-        transform.rotation = Quaternion.Euler(xRotation, yRotation, 0);
-        orientation.rotation = Quaternion.Euler(0, yRotation, 0);
+        // Update is called once per frame
+        void FixedUpdate()
+        {
+            float mouseX = Input.GetAxisRaw("Mouse X") * Time.deltaTime * senX;
+            float mouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * senY;
 
-    }
+            yRotation += mouseX;
+            xRotation -= mouseY;
+            xRotation = Mathf.Clamp(xRotation, -90, 90f);
+
+            transform.rotation = Quaternion.Euler(xRotation, yRotation, 0);
+            orientation.rotation = Quaternion.Euler(0, yRotation, 0);
+
+        }
+
 }

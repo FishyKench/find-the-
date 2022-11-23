@@ -28,8 +28,10 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Refrences")]
     public Transform orientation;
+    public GameObject Camera;
+    public GameObject Gun;
 
-  
+
 
 
     public Vector3 moveDierction;
@@ -44,6 +46,8 @@ public class PlayerMovement : MonoBehaviour
         readyToJump = true;
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
+
+        Gun.GetComponent<Collider>();
 
 
 
@@ -70,11 +74,16 @@ public class PlayerMovement : MonoBehaviour
 
         SpeedControl();
 
+
+
+
     }
 
     private void FixedUpdate()
     {
         MovePlayer();
+
+        CopyCamera();
     }
 
 
@@ -144,6 +153,23 @@ public class PlayerMovement : MonoBehaviour
     {
         readyToJump = true;
     }
+
+
+
+    public void CopyCamera()
+    {
+        this.transform.rotation = Camera.transform.rotation;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+       if(collision.gameObject.tag == "Gun")
+        {
+            Physics.IgnoreCollision(Gun.GetComponent<Collider>(), GetComponent<Collider>());
+        }
+    }
+
+
 
 
 

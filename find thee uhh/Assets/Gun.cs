@@ -18,16 +18,10 @@ public class Gun : MonoBehaviour
     public float timeBtweenShooting, range;
 
 
-
-
     public Camera fpsCam;
     public Transform attackPoint;
     public LayerMask whatToHit;
     public RaycastHit rayHit;
-
-
-
-
 
     void Start()
     {
@@ -41,6 +35,9 @@ public class Gun : MonoBehaviour
         {
             Shoot();
         }
+
+       
+
     }
 
 
@@ -58,5 +55,6 @@ public class Gun : MonoBehaviour
 
 
     }
+
 
 }

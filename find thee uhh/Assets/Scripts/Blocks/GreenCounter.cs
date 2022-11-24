@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BlueCounter : MonoBehaviour
+public class GreenCounter : MonoBehaviour
 {
-   
-
+    
 }
+
+
+

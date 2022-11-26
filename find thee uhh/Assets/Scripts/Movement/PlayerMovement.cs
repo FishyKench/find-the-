@@ -166,13 +166,9 @@ public class PlayerMovement : MonoBehaviour
         {
             rb.AddForce(GetSlopeMoveDirection(moveDierction) * moveSpeed * 20f, ForceMode.Force);
         }
-
-
-
-
         //on da ground rose??
 
-        if (grounded)
+        else if (grounded)
         {
             rb.AddForce(moveDierction.normalized * moveSpeed * 10f, ForceMode.Force);
         }
@@ -244,7 +240,6 @@ public class PlayerMovement : MonoBehaviour
         // Crouching here!
         if (Input.GetKey(crouchKey))
         {
-            print("im being executed but im a bitch!!");
             state = MovementState.crouching;
             moveSpeed = crouchSpeed;
 
@@ -280,6 +275,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if(Physics.Raycast(transform.position, Vector3.down, out slopeHit,playerHeight * 0.5f + 0.3f))
         {
+            print("please i had ohope");
             float angle = Vector3.Angle(Vector3.up, slopeHit.normal);
             return angle < maxSlopeANGL && angle != 0;
         }

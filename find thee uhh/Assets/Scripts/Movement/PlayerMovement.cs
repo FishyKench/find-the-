@@ -7,10 +7,10 @@ public class PlayerMovement : MonoBehaviour
     // Start is called before the first frame update
 
     [Header("Movement")]
-    private  float moveSpeed;
+    private float moveSpeed;
     public float walkSpeed;
     public float sprintSpeed;
-//jump
+    //jump
     public float jumpForce;
     public float jumpCoolDown;
     public float airMulti;
@@ -103,7 +103,7 @@ public class PlayerMovement : MonoBehaviour
             rb.drag = 0;
         }
 
-        
+
 
     }
 
@@ -138,7 +138,7 @@ public class PlayerMovement : MonoBehaviour
         {
             transform.localScale = new Vector3(transform.localScale.x, crouchYScale, transform.localScale.z);
             rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
-            
+
         }
 
         // stop crouch
@@ -158,20 +158,15 @@ public class PlayerMovement : MonoBehaviour
 
         moveDierction = orientation.forward * verticalInput + orientation.right * horizontalInput;
 
-        rb.AddForce(moveDierction.normalized * moveSpeed * 10f, ForceMode.Force);
+        //rb.AddForce(moveDierction.normalized * moveSpeed * 10f, ForceMode.Force);
 
 
         //on slopeee salope
-
-        if (onSlope()&& !exitingSlope)
+        if (onSlope())
         {
-            rb.AddForce(GetSlopeMoveDirection() * moveSpeed * 20f, ForceMode.Force);
-
-            if (rb.velocity.y > 0)
-            {
-                rb.AddForce(Vector3.down * 80f, ForceMode.Force);
-            }
+            rb.AddForce(GetSlopeMoveDirection(moveDierction) * moveSpeed * 20f, ForceMode.Force);
         }
+
 
 
 
@@ -238,7 +233,7 @@ public class PlayerMovement : MonoBehaviour
     private void ResetJump()
     {
         readyToJump = true;
-       exitingSlope = false;
+        exitingSlope = false;
     }
 
 
@@ -247,25 +242,24 @@ public class PlayerMovement : MonoBehaviour
     {
 
         // Crouching here!
-        if (Input.GetKeyDown(crouchKey))
+        if (Input.GetKey(crouchKey))
         {
-            
+            print("im being executed but im a bitch!!");
             state = MovementState.crouching;
             moveSpeed = crouchSpeed;
-            
+
         }
 
+        //sprinitng here!
 
-
-        //Sprinting here!
-        if(grounded && Input.GetKey(sprintKey))
+        else if (grounded && Input.GetKey(sprintKey))
         {
             state = MovementState.sprinting;
             moveSpeed = sprintSpeed;
 
         }
 
-        // Walking Here!!
+        //walking here!
         else if (grounded)
         {
             state = MovementState.walking;
@@ -278,29 +272,23 @@ public class PlayerMovement : MonoBehaviour
             state = MovementState.air;
 
         }
-
-
-       
-        
     }
 
 
 
     public bool onSlope()
     {
-
-        print(" im on da slope :D");
-        if (Physics.Raycast(transform.position, Vector3.down, out slopeHit, playerHeight * 0.5f + 0.3f))
+        if(Physics.Raycast(transform.position, Vector3.down, out slopeHit,playerHeight * 0.5f + 0.3f))
         {
             float angle = Vector3.Angle(Vector3.up, slopeHit.normal);
-            return angle < maxSlopeANGL && angle != 0f;
+            return angle < maxSlopeANGL && angle != 0;
         }
         return false;
     }
 
-    private Vector3 GetSlopeMoveDirection()
+    public Vector3 GetSlopeMoveDirection(Vector3 direction)
     {
-        return Vector3.ProjectOnPlane(moveDierction, slopeHit.normal).normalized;
+        return Vector3.ProjectOnPlane(direction, slopeHit.normal).normalized;
     }
 
 

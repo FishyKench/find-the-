@@ -9,6 +9,9 @@ TagManager:
   - blue
   - red
   - green
+  - ValueRed
+  - ValueGreen
+  - ValueBlue
   layers:
   - Default
   - TransparentFX

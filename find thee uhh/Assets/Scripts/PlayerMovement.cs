@@ -7,7 +7,10 @@ public class PlayerMovement : MonoBehaviour
     // Start is called before the first frame update
 
     [Header("Movement")]
-    public float moveSpeed;
+    private  float moveSpeed;
+    public float walkSpeed;
+    public float sprintSpeed;
+//jump
     public float jumpForce;
     public float jumpCoolDown;
     public float airMulti;
@@ -15,8 +18,19 @@ public class PlayerMovement : MonoBehaviour
 
 
 
+
+
+    [Header("Crouching")]
+    public float crouchSpeed = 3.5f;
+    public float crouchYScale;
+    private float startYScale;
+
+
+
     [Header("KeyBindings")]
     public KeyCode jumpKey = KeyCode.Space;
+    public KeyCode sprintKey = KeyCode.LeftShift;
+    public KeyCode crouchKey = KeyCode.LeftControl;
 
 
     [Header("Ground Sheek ya know :P")]
@@ -30,36 +44,45 @@ public class PlayerMovement : MonoBehaviour
     public Transform orientation;
     public GameObject Camera;
     public GameObject Gun;
-
-
-
-
     public Vector3 moveDierction;
-
     public Rigidbody rb;
 
     public float horizontalInput;
     public float verticalInput;
+
+
+    public MovementState state;
+    public enum MovementState
+    {
+        walking,
+        sprinting,
+        crouching,
+        air,
+    }
+
+
 
     void Start()
     {
         readyToJump = true;
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
-
         Gun.GetComponent<Collider>();
+
+        startYScale = transform.localScale.y;
 
 
 
 
     }
 
-    // Update is called once per frame
     void Update()
     {
         grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIsGroud);
 
         MyInput();
+        SpeedControl();
+        StateHandler();
 
 
         if (grounded)
@@ -72,7 +95,7 @@ public class PlayerMovement : MonoBehaviour
             rb.drag = 0;
         }
 
-        SpeedControl();
+        
 
     }
 
@@ -81,13 +104,15 @@ public class PlayerMovement : MonoBehaviour
         MovePlayer();
     }
 
+    // beginning of all methods
+
 
     private void MyInput()
     {
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
 
-        // jump 
+        // when to jump 
 
         if (Input.GetKey(jumpKey) && readyToJump && grounded)
         {
@@ -96,6 +121,24 @@ public class PlayerMovement : MonoBehaviour
 
             Invoke(nameof(ResetJump), jumpCoolDown);
         }
+
+
+
+        // crouching input checker
+
+        if (Input.GetKeyDown(crouchKey))
+        {
+            transform.localScale = new Vector3(transform.localScale.x, crouchYScale, transform.localScale.z);
+            rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
+            
+        }
+
+        // stop crouch
+        if (Input.GetKeyUp(crouchKey))
+        {
+            transform.localScale = new Vector3(transform.localScale.x, startYScale, transform.localScale.z);
+        }
+
 
     }
 
@@ -148,5 +191,50 @@ public class PlayerMovement : MonoBehaviour
     {
         readyToJump = true;
     }
+
+
+
+    public void StateHandler()
+    {
+
+        // Crouching here!
+        if (Input.GetKeyDown(crouchKey))
+        {
+            
+            state = MovementState.crouching;
+            moveSpeed = crouchSpeed;
+            
+        }
+
+
+
+        //Sprinting here!
+        if(grounded && Input.GetKey(sprintKey))
+        {
+            state = MovementState.sprinting;
+            moveSpeed = sprintSpeed;
+        }
+
+        // Walking Here!!
+        else if (grounded)
+        {
+            state = MovementState.walking;
+            moveSpeed = walkSpeed;
+        }
+
+        // MF IS FLYIN DA HEEEEL (in air here!)
+        else
+        {
+            state = MovementState.air;
+
+        }
+        
+    }
+
+
+
+
+
+
 
 }

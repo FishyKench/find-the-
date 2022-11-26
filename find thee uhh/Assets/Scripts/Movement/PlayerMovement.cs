@@ -10,6 +10,8 @@ public class PlayerMovement : MonoBehaviour
     private float moveSpeed;
     public float walkSpeed;
     public float sprintSpeed;
+    public float wallRunSpeed;
+
     //jump
     public float jumpForce;
     public float jumpCoolDown;
@@ -65,8 +67,11 @@ public class PlayerMovement : MonoBehaviour
         walking,
         crouching,
         sprinting,
+        wallRunning,
         air,
     }
+
+    public bool wallRunning;
 
 
 
@@ -237,6 +242,18 @@ public class PlayerMovement : MonoBehaviour
     public void StateHandler()
     {
 
+        //wall running here!!
+
+        if (wallRunning)
+        {
+            state = MovementState.wallRunning;
+            moveSpeed = wallRunSpeed;
+        }
+
+
+
+
+
         // Crouching here!
         if (Input.GetKey(crouchKey))
         {
@@ -275,7 +292,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if(Physics.Raycast(transform.position, Vector3.down, out slopeHit,playerHeight * 0.5f + 0.3f))
         {
-            print("please i had ohope");
+            
             float angle = Vector3.Angle(Vector3.up, slopeHit.normal);
             return angle < maxSlopeANGL && angle != 0;
         }

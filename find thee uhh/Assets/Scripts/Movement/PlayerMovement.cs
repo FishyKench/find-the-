@@ -11,14 +11,13 @@ public class PlayerMovement : MonoBehaviour
     public float walkSpeed;
     public float sprintSpeed;
     public float wallRunSpeed;
+    public float swingSpeed;
 
     //jump
     public float jumpForce;
     public float jumpCoolDown;
     public float airMulti;
     bool readyToJump;
-
-
 
     [Header("Crouching")]
     public float crouchSpeed;
@@ -50,16 +49,10 @@ public class PlayerMovement : MonoBehaviour
     public float verticalInput;
     public MovementState state;
 
-
-
-
     [Header("Slope Handling")]
     public float maxSlopeANGL;
     private RaycastHit slopeHit;
     private bool exitingSlope;
-
-
-
 
 
     public enum MovementState
@@ -67,12 +60,13 @@ public class PlayerMovement : MonoBehaviour
         walking,
         crouching,
         sprinting,
+        swinging,
         wallRunning,
         air,
     }
 
     public bool wallRunning;
-
+    public bool swinging;
 
 
     void Start()
@@ -83,9 +77,6 @@ public class PlayerMovement : MonoBehaviour
         Gun.GetComponent<Collider>();
 
         startYScale = transform.localScale.y;
-
-
-
 
     }
 
@@ -118,7 +109,6 @@ public class PlayerMovement : MonoBehaviour
     }
 
     // beginning of all methods
-
 
     private void MyInput()
     {
@@ -158,12 +148,16 @@ public class PlayerMovement : MonoBehaviour
 
     private void MovePlayer()
     {
+        if (swinging)
+        {
+            return;
+        }
 
         //movement direction
 
         moveDierction = orientation.forward * verticalInput + orientation.right * horizontalInput;
 
-        //rb.AddForce(moveDierction.normalized * moveSpeed * 10f, ForceMode.Force);
+        rb.AddForce(moveDierction.normalized * moveSpeed * 10f, ForceMode.Force);
 
 
         //on slopeee salope
@@ -251,11 +245,8 @@ public class PlayerMovement : MonoBehaviour
         }
 
 
-
-
-
         // Crouching here!
-        if (Input.GetKey(crouchKey))
+        else if (Input.GetKey(crouchKey))
         {
             state = MovementState.crouching;
             moveSpeed = crouchSpeed;
@@ -270,6 +261,14 @@ public class PlayerMovement : MonoBehaviour
             moveSpeed = sprintSpeed;
 
         }
+
+
+        else if (swinging)
+        {
+            state = MovementState.swinging;
+            moveSpeed = swingSpeed;
+        }
+
 
         //walking here!
         else if (grounded)
